@@ -10,7 +10,7 @@ from models.place import Place
 from models.review import Review
 
 
-class FileStorage:
+class FileStorage():
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
     __objects = {}

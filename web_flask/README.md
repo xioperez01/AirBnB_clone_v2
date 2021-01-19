@@ -15,10 +15,10 @@ Web application frameworks, or simply "web frameworks", are the de facto way to 
 * How to create a dynamic template (loops, conditions…)
 * How to display in HTML data from a MySQL database
 ## Environment
-Languages: Python 3.4.3, HTML, CSS
-OS: Ubuntu 14.04 LTS
-Framework: Flask
-Style: [W3C-Validator](https://github.com/holbertonschool/W3C-Validator) - [PEP 8](https://www.python.org/dev/peps/pep-0008/)
+* Languages: Python 3.4.3, HTML, CSS
+* OS: Ubuntu 14.04 LTS
+* Framework: Flask
+* Style: [W3C-Validator](https://github.com/holbertonschool/W3C-Validator) - [PEP 8](https://www.python.org/dev/peps/pep-0008/)
 ## Autors :ribbon:
 [Angie Pérez](https://twitter.com/xiommyperez)
 

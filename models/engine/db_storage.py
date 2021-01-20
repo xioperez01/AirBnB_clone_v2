@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import scoped_session
-from sqlalchemy import (create_engine)
+from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.orm import relationship
+from sqlalchemy import create_engine
 import os
 from models.amenity import Amenity
 from models.state import State
@@ -9,54 +9,67 @@ from models.city import City
 from models.review import Review
 from models.user import User
 from models.place import Place
-from models.base_model import Base
+from models.base_model import Base, BaseModel
 
 
 class DBStorage():
-    """New engine DBStorage"""
+    """
+    New engine DBStorage
+    """
     __engine = None
     __session = None
 
     def __init__(self):
-        """Constructor"""
-
+        """
+        constructor
+        """
         user = os.getenv("HBNB_MYSQL_USER")
-        passwd = os.getenv("HBNB_MYSQL_passwd")
+        pwd = os.getenv("HBNB_MYSQL_PWD")
+        # will be localhost
         host = os.getenv("HBNB_MYSQL_HOST")
         db = os.getenv("HBNB_MYSQL_DB")
         connection = 'mysql+mysqldb://{}:{}@localhost/{}'
         self.__engine = create_engine(connection.format(
-            user, passwd, db), pool_pre_ping=True)
+            user, pwd, db), pool_pre_ping=True)
         if (os.getenv("HBNB_ENV") == "test"):
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """The dictionary of cls"""
-        new_dict = {}
+        """
+        return the dictionary of cls
+        """
+        dicc = {}
         if cls:
             query = self.__session.query(eval(cls))
-            for class_ in query:
-                key = "{}.{}".format(type(class_).__name__, class_.id)
-                new_dict[key] = class_
+            for clase in query:
+                key = "{}.{}".format(type(clase).__name__, clase.id)
+                dicc[key] = clase
         else:
-            class_list = [User, State, City, Amenity, Place, Review]
-            for class_ in class_list:
-                query = self.__session.query(class_)
+            lista_clases = [User, State, City, Amenity, Place, Review]
+            for clase in lista_clases:
+                query = self.__session.query(clase)
                 for obj in query:
                     key = "{}.{}".format(type(obj).__name__, obj.id)
-                    new_dict[key] = obj
-        return new_dict
+                    dicc[key] = obj
+        return dicc
 
     def new(self, obj):
-        """New object to db"""
+        """
+        add a new object to db
+        """
         self.__session.add(obj)
 
     def save(self):
-        """Commit  the objetc to db"""
+        """
+        commit  the objetc to db
+        """
         self.__session.commit()
 
     def delete(self, obj=None):
-        """Delete obj"""
+        """
+        delete from the current database session
+        obj if not None
+        """
         if obj is not None:
             self.__session.delete(obj)
 

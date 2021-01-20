@@ -12,7 +12,7 @@ from models.place import Place
 from models.base_model import Base, BaseModel
 
 
-class DBStorage():
+class DBStorage:
     """
     New engine DBStorage
     """
@@ -77,10 +77,11 @@ class DBStorage():
         """
         create all tables in the database
         """
-        # create tables into a db
         Base.metadata.create_all(self.__engine)
-        # creamos el session object
-        # expire_on_commmot = false >>> ignore the query sql
         session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session)
         self.__session = Session()
+
+    def close(self):
+        """ Remove method on the private session attribute """
+        self.__session.close()

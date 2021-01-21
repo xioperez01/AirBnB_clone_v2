@@ -38,20 +38,18 @@ class DBStorage:
         """
         return the dictionary of cls
         """
-        dicc = {}
+        objs_dict = {}
         if cls:
-            query = self.__session.query(eval(cls))
-            for clase in query:
-                key = "{}.{}".format(type(clase).__name__, clase.id)
-                dicc[key] = clase
+            my_query = self.__session.query(cls).all()
+            for obj in my_query:
+                objs_dict[cls.__name__ + "." + obj.id] = obj
         else:
-            lista_clases = [User, State, City, Amenity, Place, Review]
-            for clase in lista_clases:
-                query = self.__session.query(clase)
-                for obj in query:
-                    key = "{}.{}".format(type(obj).__name__, obj.id)
-                    dicc[key] = obj
-        return dicc
+            for key, value in self.classes.items():
+                my_query = self.__session.query(value).all()
+                for obj in my_query:
+                    objs_dict[key + "." + obj.id] = obj
+
+        return objs_dict
 
     def new(self, obj):
         """
